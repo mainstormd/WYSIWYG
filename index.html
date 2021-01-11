@@ -44,7 +44,7 @@
        button.addEventListener('click',ToolkitButtonsClickHandler);
 
       
-       function ToolkitButtonsClickHandler()
+      function ToolkitButtonsClickHandler()
       {
         let command = this.dataset.command;
 
@@ -53,15 +53,14 @@
           let selection = window.getSelection();
           if(selection != "") 
           {
-            var rangeselection = selection.getRangeAt(0);
+            var rangeSelection = selection.getRangeAt(0);
             var node = document.createElement(command);
 
-            node.style.fontSize = command == "h1" ? "32px" : "24px";
-            node.style.fontWeight= 'bold';
-            node.innerText = selection.toString();
+            node.classList.add(command == "h1" ? 'header1-text' : 'header2-text');
+            node.append(rangeSelection.cloneContents());
             
-            rangeselection.deleteContents();
-            rangeselection.insertNode(node);
+            rangeSelection.deleteContents();
+            rangeSelection.insertNode(node);
           }
           else 
             document.execCommand('formatBlock', false, command);
