@@ -40,21 +40,42 @@
     <script>
       let toolkitButtons = document.querySelectorAll('.toolkit button');
       
-      function ToolkitButtonsClickHandler()
+      for(let button of toolkitButtons)
+       button.addEventListener('click',ToolkitButtonsClickHandler);
+
+      
+       function ToolkitButtonsClickHandler()
       {
         let command = this.dataset.command;
 
         if(command == 'h1' || command == 'h2')
-          document.execCommand('formatBlock', false, command);
+        {
+          let selection = window.getSelection();
+          if(selection != "") 
+          {
+            var rangeselection = selection.getRangeAt(0);
+            var node = document.createElement(command);
+
+            node.style.fontSize = command == "h1" ? "32px" : "24px";
+            node.style.fontWeight= 'bold';
+            node.innerText = selection.toString();
+            
+            rangeselection.deleteContents();
+            rangeselection.insertNode(node);
+          }
+          else 
+            document.execCommand('formatBlock', false, command);
+        }
         
         if(command == 'bold' || command == 'italic')
           document.execCommand(command, false, null);
       }
      
-      for(let button of toolkitButtons)
-       button.addEventListener('click',ToolkitButtonsClickHandler);
-
+      
+      
     </script>
 
   </body>
 </html>
+
+
