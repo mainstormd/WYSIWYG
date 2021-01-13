@@ -57,6 +57,7 @@
             var node = document.createElement(command);
 
             node.classList.add(command == "h1" ? 'header1-text' : 'header2-text');
+            node.style.fontSize = command == "h1" ? "32px" : "24px";
             node.append(rangeSelection.cloneContents());
             
             rangeSelection.deleteContents();
