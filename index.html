@@ -54,10 +54,9 @@
           if(selection != "") 
           {
             var rangeSelection = selection.getRangeAt(0);
-            var node = document.createElement(command);
+            var node = document.createElement('div');
 
             node.classList.add(command == "h1" ? 'header1-text' : 'header2-text');
-            node.style.fontSize = command == "h1" ? "32px" : "24px";
             node.append(rangeSelection.cloneContents());
             
             rangeSelection.deleteContents();
