@@ -1,4 +1,4 @@
-html {font-size: 100%;}
+/*html{font-size: 0; }*/
 body {
   font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
@@ -7,8 +7,10 @@ body {
   height: 100vh;
   padding: 0;
   margin: 0;
-  background: #edc8f4;
+  background: #edc8f4; 
+  
 }
+/*body,div, span, a, p, br{ font-size: 14px; } */
 
 .container {
   width: 100%;

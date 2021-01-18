@@ -43,7 +43,29 @@
       for(let button of toolkitButtons)
        button.addEventListener('click',ToolkitButtonsClickHandler);
 
-      
+      var editArea = document.querySelector('.edit-area');
+
+      editArea.addEventListener('copy', (event) => {
+          const selection = document.getSelection();
+          rangeSelection = selection.getRangeAt(0); 
+
+          var contents = rangeSelection.cloneContents()
+          var editArea = document.querySelector('.edit-area');
+          var element = document.createElement('div')
+          element.style.content = "hidden";
+          element.append(contents);
+          editArea.append(element);
+          var s = element.getElementsByTagName('div');
+
+          for( item of s )
+              item.style.fontSize = window.getComputedStyle(item).getPropertyValue("font-size");
+
+          event.clipboardData.setData("text/html", element.innerHTML)
+          event.clipboardData.setData("text/plain", element.textContent);
+          this.editArea.removeChild(element);
+          event.preventDefault();
+      });
+
       function ToolkitButtonsClickHandler()
       {
         let command = this.dataset.command ;
@@ -69,9 +91,20 @@
         if(command == 'bold' || command == 'italic')
           document.execCommand(command, false, null);
       }
-     
-      
-      
+     /*
+      var s = document.getSelection().getRangeAt(0)
+      var contents = s.cloneContents()
+      var editArea = document.querySelector('.edit-area');
+      var element = document.createElement('div')
+      element.append(contents)
+      editArea.append(element)
+
+      s.forEach((item) =>{ 
+        if(item.nodeName != "#text")
+        {
+          item.style.fontSize = window.getComputedStyle(item).getPropertyValue("font-size");
+        }
+      })*/
     </script>
 
   </body>
