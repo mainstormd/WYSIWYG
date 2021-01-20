@@ -38,7 +38,8 @@
     </div>
     
     <script>
-      let toolkitButtons = document.querySelectorAll('.toolkit button');
+    
+     let toolkitButtons = document.querySelectorAll('.toolkit button');
       
       for(let button of toolkitButtons)
        button.addEventListener('click',ToolkitButtonsClickHandler);
@@ -55,10 +56,10 @@
           element.style.content = "hidden";
           element.append(contents);
           editArea.append(element);
-          var s = element.getElementsByTagName('div');
+          var s = element.getElementsByTagName('span');
 
           for( item of s )
-              item.style.fontSize = window.getComputedStyle(item).getPropertyValue("font-size");
+              item.style = window.getComputedStyle(item).cssText;
 
           event.clipboardData.setData("text/html", element.innerHTML)
           event.clipboardData.setData("text/plain", element.textContent);
@@ -66,45 +67,74 @@
           event.preventDefault();
       });
 
-      function ToolkitButtonsClickHandler()
-      {
-        let command = this.dataset.command ;
+      editArea.addEventListener('cut', (event) => {
+          const selection = document.getSelection();
+          rangeSelection = selection.getRangeAt(0); 
 
-        if(command == 'h1' || command == 'h2')
-        {
-          let selection = window.getSelection();
-          if(selection != "") 
-          {
-            var rangeSelection = selection.getRangeAt(0);
-            var node = document.createElement('div');
+          var contents = rangeSelection.cloneContents()
+          var editArea = document.querySelector('.edit-area');
+          var element = document.createElement('div')
+          element.style.content = "hidden";
+          element.append(contents);
+          editArea.append(element);
+          var s = element.getElementsByTagName('span');
 
-            node.classList.add(command == "h1" ? 'header1-text' : 'header2-text');
-            node.append(rangeSelection.cloneContents());
-            
-            rangeSelection.deleteContents();
-            rangeSelection.insertNode(node);
-          }
-          else 
-            document.execCommand('formatBlock', false, command);
-        }
+          for( item of s )
+              item.style = window.getComputedStyle(item).cssText;
+
+          event.clipboardData.setData("text/html", element.innerHTML)
+          event.clipboardData.setData("text/plain", element.textContent);
+          this.editArea.removeChild(element);
+          selection.deleteFromDocument();
+          event.preventDefault();
+      });
+
+    function ToolkitButtonsClickHandler()
+    {
+        let command = this.dataset.command;
+
+        let comandClasses = {
+                             'h1':'header1-text',
+                             'h2':'header2-text',
+                             'bold':'bold-text',
+                             'italic':'italic-text'
+                            };
+
+        let selection = window.getSelection();
         
-        if(command == 'bold' || command == 'italic')
-          document.execCommand(command, false, null);
-      }
-     /*
-      var s = document.getSelection().getRangeAt(0)
-      var contents = s.cloneContents()
-      var editArea = document.querySelector('.edit-area');
-      var element = document.createElement('div')
-      element.append(contents)
-      editArea.append(element)
-
-      s.forEach((item) =>{ 
-        if(item.nodeName != "#text")
+        if( selection != "" && isEditorSelection(selection) ) 
         {
-          item.style.fontSize = window.getComputedStyle(item).getPropertyValue("font-size");
+          let rangeSelection = selection.getRangeAt(0);
+          
+          let tagName = 'span';
+          
+          let node = document.createElement(tagName);
+
+          node.classList.add(comandClasses[command]);
+          node.append(rangeSelection.cloneContents());
+
+          rangeSelection.deleteContents();
+          rangeSelection.insertNode(node);
         }
-      })*/
+    }
+      
+    function isEditorSelection( selection )
+    {
+      if(selection != null)
+      {
+        let parent = selection.anchorNode.parentElement;
+        while(parent != null )
+        {    
+            if(parent.classList.contains("edit-area"))
+            {
+                return true;
+            }
+          parent = parent.parentElement;  
+        }
+      }
+      return false;
+    }
+
     </script>
 
   </body>
