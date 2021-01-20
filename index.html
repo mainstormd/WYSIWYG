@@ -104,25 +104,32 @@
         
         if( selection != "" && isEditorSelection(selection) ) 
         {
-          let rangeSelection = selection.getRangeAt(0);
-          
-          let tagName = 'span';
-          
-          let node = document.createElement(tagName);
+            let rangeSelection = selection.getRangeAt(0);
 
-          node.classList.add(comandClasses[command]);
-          node.append(rangeSelection.cloneContents());
+            let tagName = 'span';
 
-          rangeSelection.deleteContents();
-          rangeSelection.insertNode(node);
+            let node = document.createElement(tagName);
+                node.classList.add(comandClasses[command]);
+                node.append(rangeSelection.cloneContents());
+
+            if(command == "h1" || command == "h2")
+            {
+                let interimElement = document.createElement('div')
+                interimElement.append(node);
+                node = interimElement;
+            }
+
+            rangeSelection.deleteContents();
+            rangeSelection.insertNode(node);
+
+            //delete br
+            var brElement = document.getElementsByTagName('br')[0];
           
-          //delete br
-          var brElement = document.getElementsByTagName('br');
-          if (brElement)
-          {
-             var brParent = brElement.parentElement;
-             brParent.removeChild(brElement);
-          }
+            if (brElement)
+            {
+                var brParent = brElement.parentElement;
+                brParent.removeChild(brElement);
+            }
         }
     }
       
