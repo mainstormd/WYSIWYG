@@ -115,6 +115,14 @@
 
           rangeSelection.deleteContents();
           rangeSelection.insertNode(node);
+          
+          //delete br
+          var brElement = document.getElementsByTagName('br');
+          if (brElement)
+          {
+             var brParent = brElement.parentElement;
+             brParent.removeChild(brElement);
+          }
         }
     }
       
