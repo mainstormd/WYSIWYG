@@ -51,6 +51,26 @@
           rangeSelection = selection.getRangeAt(0); 
 
           var contents = rangeSelection.cloneContents()
+
+          var ancestorContainer = rangeSelection.commonAncestorContainer;
+          
+          if(ancestorContainer.tagName === "SPAN")
+          {
+            let interimSpan = document.createElement('span');
+                interimSpan.append(contents);
+                interimSpan.className = ancestorContainer.className;
+
+                let classListAncestor = ancestorContainer.classList;
+                
+                if(classListAncestor.containts("header1-text") ||
+                    ancestorContainer.classList.containts("header2-text"))
+                {
+                  let interimDiv = document.createElement('div');
+                  interimDiv.append(interimSpan);
+                  contents = interimDiv;
+                }    
+          }
+
           var editArea = document.querySelector('.edit-area');
           var element = document.createElement('div')
           element.style.content = "hidden";
@@ -71,7 +91,27 @@
           const selection = document.getSelection();
           rangeSelection = selection.getRangeAt(0); 
 
-          var contents = rangeSelection.cloneContents()
+          var contents = rangeSelection.cloneContents();
+
+          var ancestorContainer = rangeSelection.commonAncestorContainer;
+          
+          if(ancestorContainer.tagName === "SPAN")
+          {
+            let interimSpan = document.createElement('span');
+                interimSpan.append(contents);
+                interimSpan.className = ancestorContainer.className;
+
+                let classListAncestor = ancestorContainer.classList;
+                
+                if(classListAncestor.containts("header1-text") ||
+                    ancestorContainer.classList.containts("header2-text"))
+                {
+                  let interimDiv = document.createElement('div');
+                  interimDiv.append(interimSpan);
+                  contents = interimDiv;
+                }    
+          }
+          
           var editArea = document.querySelector('.edit-area');
           var element = document.createElement('div')
           element.style.content = "hidden";
@@ -114,7 +154,7 @@
 
             if(command == "h1" || command == "h2")
             {
-                let interimElement = document.createElement('div')
+                let interimElement = document.createElement('div');
                 interimElement.append(node);
                 node = interimElement;
             }
